@@ -1,28 +1,11 @@
 
-
-
-function index(req, res) {
-    console.log('index')
-}
-
 function show(req, res) {
-    console.log('show')
-}
-
-function store(req, res) {
-    console.log('store')
-}
-
-function update(req, res) {
-    console.log('update')
+    res.send('Game Show')
 }
 
 function modify(req, res) {
-    console.log('modify')
+    res.send('Game Modify')
 }
 
-function destroy(req, res) {
-    console.log('destroy')
-}
 
-module.exports = { index, show, store, update, modify, destroy }
+module.exports = { show, modify }
