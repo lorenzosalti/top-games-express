@@ -1,4 +1,4 @@
-
+const connect = require('../data/dbgames');
 
 
 function orderShow(req, res) {

@@ -1,3 +1,4 @@
+const connect = require('../data/dbgames');
 
 function show(req, res) {
     res.send('Game Show')

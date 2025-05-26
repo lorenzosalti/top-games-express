@@ -8,7 +8,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "node --watch app.js"
+    "dev": "node --env-file=.env --watch app.js"
   },
   "dependencies": {
     "axios": "^1.9.0",
