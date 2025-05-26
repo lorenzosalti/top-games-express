@@ -3,6 +3,7 @@ const router = express.Router()
 
 const orderController = require('../controllers/orderController')
 
+router.get('/', orderController.orderIndex)
 
 router.get('/:id', orderController.orderShow)
 
