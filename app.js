@@ -10,10 +10,8 @@ const mailingController = require('./controllers/mailingController');
 const consolesRouter = require('./routers/consolesRouter');
 const ordersRouter = require('./routers/ordersRouter');
 const homeController = require('./controllers/homeController')
+
 app.get('/', homeController.index)
-app.get('/', (req, res) => {
-  res.send('Homepage');
-});
 
 const { FE_PATH } = process.env;
 app.use(cors({

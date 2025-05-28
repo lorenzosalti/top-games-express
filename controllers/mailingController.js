@@ -2,10 +2,7 @@ const connect = require('../data/dbgames');
 
 function mailingStore(req, res) {
 
-  const sql = `SELECT 
-    *
-FROM
-    mailing_list;`;
+  const sql = `SELECT * FROM mailing_list;`;
 
   connect.query(sql, (err, results) => {
     if (err) {
