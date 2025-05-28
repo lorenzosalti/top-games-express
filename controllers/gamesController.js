@@ -19,7 +19,10 @@ function index(req, res) {
             console.err(err);
             return res.status(500).json({ error: 'Server error' });
         }
-        res.json(results);
+        res.json(results.map(result => ({
+            ...result,
+            imagePath: process.env.PUBLIC_PATH + 'cover-games/' + result.image
+        })));
     });
 };
 

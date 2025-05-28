@@ -29,6 +29,8 @@ app.use('/order', ordersRouter);
 // pop up mailing 
 app.post('/mailing-list', mailingController.mailingStore);
 
+app.use(express.static('public'));
+
 
 app.use(handleError);
 app.use(notFound);
