@@ -1,8 +1,18 @@
 
 const connect = require('../data/dbgames');
 
+
+
+
 function index(req, res) {
-    const sql = `SELECT * FROM games;`;
+
+    const sql = `
+    SELECT games.*, GROUP_CONCAT(name_genre ORDER BY name_genre SEPARATOR ', ') AS genres FROM genre_game
+    INNER JOIN genres
+    ON genres.id = genre_game.id_genre
+    INNER JOIN games
+    ON games.id = genre_game.id_game
+    GROUP BY games.id;`;
 
     connect.query(sql, (err, results) => {
         if (err) {
@@ -17,15 +27,15 @@ function index(req, res) {
 
 function show(req, res) {
 
-
     const { id } = req.params;
 
-    const sql = `SELECT 
-    *
-FROM
-    games
-WHERE
-    games.id = ?`;
+    const sql = `
+    SELECT games.*, GROUP_CONCAT(name_genre ORDER BY name_genre SEPARATOR ', ') AS genres FROM genre_game
+    INNER JOIN genres
+    ON genres.id = genre_game.id_genre
+    INNER JOIN games
+    ON games.id = genre_game.id_game
+    WHERE id_game = ?;`;
 
     connect.query(sql, [id], (err, results) => {
         if (err) {
@@ -33,30 +43,26 @@ WHERE
             return res.status(500).json({ error: 'Server error' });
         }
         res.json(results);
-
     });
 }
 
-function modify(req, res) {
+// function modify(req, res) {
 
-    const { id } = req.params;
+//     const { id } = req.params;
 
-    const sql = `SELECT 
-    *
-FROM
-    games
-WHERE
-    games.id = ?`;
+//     const sql = `
+//     SELECT * FROM games
+//     WHERE games.id = ?`;
 
-    connect.query(sql, [id], (err, results) => {
-        if (err) {
-            console.err(err);
-            return res.status(500).json({ error: 'Server error' });
-        }
-        res.json(results);
+//     connect.query(sql, [id], (err, results) => {
+//         if (err) {
+//             console.err(err);
+//             return res.status(500).json({ error: 'Server error' });
+//         }
+//         res.json(results);
 
-    });
-}
+//     });
+// }
 
 
-module.exports = { index, show, modify };
+module.exports = { index, show };

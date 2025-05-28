@@ -9,10 +9,10 @@ const gamesRouter = require('./routers/gamesRouter');
 const mailingController = require('./controllers/mailingController');
 const consolesRouter = require('./routers/consolesRouter');
 const ordersRouter = require('./routers/ordersRouter');
+const homeController = require('./controllers/homeController')
 
-app.get('/', (req, res) => {
-  res.send('Homepage');
-});
+// homepage
+app.get('/', homeController.index)
 
 const { FE_PATH } = process.env;
 app.use(cors({
@@ -21,10 +21,13 @@ app.use(cors({
 
 app.use('/games', gamesRouter);
 
+// consoles pages
 app.use('/console', consolesRouter);
 
+// orders
 app.use('/order', ordersRouter);
 
+// pop up mailing 
 app.post('/mailing-list', mailingController.mailingStore);
 
 
