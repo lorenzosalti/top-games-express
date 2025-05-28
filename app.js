@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const port = process.env.PORT;
 
@@ -12,6 +13,11 @@ const ordersRouter = require('./routers/ordersRouter');
 app.get('/', (req, res) => {
   res.send('Homepage');
 });
+
+const { FE_PATH } = process.env;
+app.use(cors({
+  origin: FE_PATH
+}))
 
 app.use('/games', gamesRouter);
 
