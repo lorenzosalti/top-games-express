@@ -6,17 +6,29 @@ const connect = require('../data/dbgames');
 
 function index(req, res) {
 
-    const sql = `
-    SELECT games.*, GROUP_CONCAT(name_genre ORDER BY name_genre SEPARATOR ', ') AS genres FROM genre_game
+    const { search } = req.query;
+
+    const queryParams = [];
+
+    let sql = `
+    SELECT games.*, GROUP_CONCAT(name_genre ORDER BY name_genre SEPARATOR ', ') AS genres_list FROM genre_game
     INNER JOIN genres
     ON genres.id = genre_game.id_genre
     INNER JOIN games
-    ON games.id = genre_game.id_game
-    GROUP BY games.id;`;
+    ON games.id = genre_game.id_game`;
 
-    connect.query(sql, (err, results) => {
+    if (search) {
+        queryParams.push(`%${search}%`);
+
+        sql += ` WHERE title LIKE ?`;
+    }
+
+    sql += ` GROUP BY games.id`;
+
+
+    connect.query(sql, queryParams, (err, results) => {
         if (err) {
-            console.err(err);
+            console.error(err);
             return res.status(500).json({ error: 'Server error' });
         }
         res.json(results);
@@ -30,7 +42,7 @@ function show(req, res) {
     const { id } = req.params;
 
     const sql = `
-    SELECT games.*, GROUP_CONCAT(name_genre ORDER BY name_genre SEPARATOR ', ') AS genres FROM genre_game
+    SELECT games.*, GROUP_CONCAT(name_genre ORDER BY name_genre SEPARATOR ', ') AS genres_list FROM genre_game
     INNER JOIN genres
     ON genres.id = genre_game.id_genre
     INNER JOIN games
@@ -39,7 +51,7 @@ function show(req, res) {
 
     connect.query(sql, [id], (err, results) => {
         if (err) {
-            console.err(err);
+            console.error(err);
             return res.status(500).json({ error: 'Server error' });
         }
         res.json(results);
