@@ -7,7 +7,7 @@ router.get('/', gamesController.index);
 
 router.get('/:id', gamesController.show);
 
-router.patch('/:id', gamesController.modify);
+// router.patch('/:id', gamesController.modify);
 
 
 
