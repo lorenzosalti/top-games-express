@@ -6,7 +6,7 @@ const connect = require('../data/dbgames');
 
 function index(req, res) {
 
-    const { search, orderBy } = req.query;
+    const { search, orderBy, orderByDirection } = req.query;
 
     const queryParams = [];
 
@@ -32,6 +32,13 @@ function index(req, res) {
     }
 
 
+    const validOrderDirectionValues = ['ASC', 'DESC'];
+
+    if (orderBy && orderByDirection && validOrderDirectionValues.includes(orderByDirection)) {
+        sql += ` ${orderByDirection}`;
+    }
+
+    console.log(orderByDirection)
 
     connect.query(sql, queryParams, (err, results) => {
         if (err) {
