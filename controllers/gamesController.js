@@ -6,7 +6,7 @@ const connect = require('../data/dbgames');
 
 function index(req, res) {
 
-    const { search } = req.query;
+    const { search, orderBy } = req.query;
 
     const queryParams = [];
 
@@ -24,6 +24,13 @@ function index(req, res) {
     }
 
     sql += ` GROUP BY games.id`;
+
+    const validOrderByValues = ['title', 'price', 'created_at'];
+
+    if (orderBy && validOrderByValues.includes(orderBy)) {
+        sql += ` ORDER BY ${orderBy}`;
+    }
+
 
 
     connect.query(sql, queryParams, (err, results) => {
