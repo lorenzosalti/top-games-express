@@ -66,11 +66,23 @@ function show(req, res) {
 
     connect.query(sql, [id], (err, results) => {
         if (err) {
+
             console.error(err);
             return res.status(500).json({ error: 'Server error' });
         }
-        res.json(results);
+
+        const currentResult = results[0];
+
+        const game = {
+            ...currentResult,
+            imagePath: process.env.PUBLIC_PATH + 'cover-games/' + currentResult.image
+        };
+
+        res.json(game);;
+
+
     });
+
 }
 
 // function modify(req, res) {
