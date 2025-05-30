@@ -38,8 +38,6 @@ function index(req, res) {
         sql += ` ${orderByDirection}`;
     }
 
-    console.log(orderByDirection)
-
     connect.query(sql, queryParams, (err, results) => {
         if (err) {
             console.error(err);
