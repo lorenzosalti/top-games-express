@@ -2,7 +2,7 @@ const connect = require('../data/dbgames');
 const nodemailer = require('nodemailer');
 
 function mailingStore(req, res) {
-  const sql = `SELECT * FROM miling_list;`;
+  const sql = `SELECT * FROM mailing_list;`;
   connect.query(sql, (err, results) => {
     if (err) return res.status(500).json({ error: 'Errore server' });
     res.json(results);
@@ -17,7 +17,7 @@ const subscribe = (req, res) => {
   }
 
   // Prima controlla se l’email è già presente
-  const sqlCheck = 'SELECT * FROM miling_list WHERE email = ?';
+  const sqlCheck = 'SELECT * FROM mailing_list WHERE email = ?';
   connect.query(sqlCheck, [email], (checkErr, results) => {
     if (checkErr) {
       console.error('Errore controllo email:', checkErr);
@@ -29,7 +29,7 @@ const subscribe = (req, res) => {
     }
 
     // Se non esiste, inserisce e manda la mail
-    const sqlInsert = 'INSERT INTO miling_list (email) VALUES (?)';
+    const sqlInsert = 'INSERT INTO mailing_list (email) VALUES (?)';
     connect.query(sqlInsert, [email], (insertErr) => {
       if (insertErr) {
         console.error('Errore inserimento:', insertErr);
