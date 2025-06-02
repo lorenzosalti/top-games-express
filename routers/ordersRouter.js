@@ -9,5 +9,7 @@ router.get('/:id', orderController.orderShow)
 
 router.post('/', orderController.orderStore)
 
+router.post('/customer', orderController.customerStore)
+
 
 module.exports = router
