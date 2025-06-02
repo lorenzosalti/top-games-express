@@ -53,7 +53,7 @@ function orderStore(req, res) {
       return res.status(500).json({ error: 'Errore nel salvataggio ordine' });
     }
 
-    // 🔧 RISPOSTA CORRETTA: restituisci l'id appena inserito
+
     res.status(201).json({ id_order: results.insertId });
   });
 }
