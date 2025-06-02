@@ -94,7 +94,7 @@ function customerStore(req, res) {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
-      subject: 'Conferma ordine BoRoad',
+      subject: 'Conferma ordine Top Games',
       text: `Ciao ${name}, grazie per il tuo ordine! Il tuo numero d'ordine è ${id_order}.`
     };
 
