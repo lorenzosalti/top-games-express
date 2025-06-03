@@ -91,16 +91,40 @@ function customerStore(req, res) {
       }
     });
 
-    const mailOptions = {
+    const customersMailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
       subject: 'Conferma ordine Top Games',
       text: `Ciao ${name}, grazie per il tuo ordine! Il tuo numero d'ordine è ${id_order}.`
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
+    const sellerMailOptions = {
+      from: process.env.EMAIL_USER,
+      to: process.env.SELLER_EMAIL,
+      subject: `Nuovo ordine ricevuto - ID: ${id_order}`,
+      text: `Hai ricevuto un nuovo ordine:\n
+Cliente: ${name} ${surname}
+Email: ${email}
+Telefono: ${phone}
+
+Indirizzo di spedizione:
+${address_shipping}
+${postal_code_shipping} ${city_shipping} (${region_shipping}, ${country_shipping})
+
+ID Ordine: ${id_order}`
+    };
+
+    transporter.sendMail(customersMailOptions, (error, info) => {
       if (error) {
         console.error('Errore invio email:', error);
+        return res.status(201).json({ message: 'Cliente registrato, ma errore nell\'invio email.' });
+      }
+
+      res.status(201).json({ message: 'Cliente registrato con successo e email inviata.' });
+    });
+    transporter.sendMail(sellerMailOptions, (sellerError, sellerInfo) => {
+      if (sellerError) {
+        console.error('Errore invio email:', sellerError);
         return res.status(201).json({ message: 'Cliente registrato, ma errore nell\'invio email.' });
       }
 
