@@ -2,10 +2,21 @@ const connect = require('../data/dbgames');
 const nodemailer = require('nodemailer');
 
 function orderIndex(req, res) {
-  const sql = `SELECT 
-    *
-FROM
-    orders`;
+  const sql = `SELECT * FROM orders`;
+
+  connect.query(sql, (err, results) => {
+    if (err) {
+      console.err(err);
+      return res.status(500).json({ error: 'Server error' });
+    }
+    res.json(results)
+
+  })
+}
+
+
+function discountIndex(req, res) {
+  const sql = `SELECT * FROM db_games.discount;`;
 
   connect.query(sql, (err, results) => {
     if (err) {
@@ -132,4 +143,9 @@ ID Ordine: ${id_order}`
     });
   });
 }
-module.exports = { orderIndex, orderShow, orderStore, customerStore }
+
+
+
+
+
+module.exports = { orderIndex, orderShow, orderStore, customerStore, discountIndex }

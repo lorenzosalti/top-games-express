@@ -5,6 +5,8 @@ const orderController = require('../controllers/orderController')
 
 router.get('/', orderController.orderIndex)
 
+router.get('/discount', orderController.discountIndex)
+
 router.get('/:id', orderController.orderShow)
 
 router.post('/', orderController.orderStore)
