@@ -11,7 +11,5 @@ router.post('/', orderController.orderStore)
 
 router.post('/customer', orderController.customerStore)
 
-router.post('/vendor', orderController.sendEmailToSeller);
-
 
 module.exports = router
