@@ -16,7 +16,7 @@ function orderIndex(req, res) {
 
 
 function discountIndex(req, res) {
-  const sql = `SELECT * FROM db_games.discount;`;
+  const sql = `SELECT * FROM db_games.discount_code;`;
 
   connect.query(sql, (err, results) => {
     if (err) {
