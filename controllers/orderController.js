@@ -43,7 +43,7 @@ function orderStore(req, res) {
   const bilingData = [total_price, date, address_billing, city_billing, postal_code_billing, country_billing, region_billing];
 
   const sql = `
-    INSERT INTO db_games.orders 
+    INSERT INTO orders 
     (total_price, date, address_billing, city_billing, postal_code_billing, country_billing, region_billing) 
     VALUES (?, ?, ?, ?, ?, ?, ?);`;
 
@@ -70,7 +70,7 @@ function customerStore(req, res) {
   const shippingData = [name, surname, email, phone, id_order, address_shipping, city_shipping, postal_code_shipping, country_shipping, region_shipping];
 
   const sql = `
-    INSERT INTO db_games.customers 
+    INSERT INTO customers 
     (name, surname, email, phone, id_order, address_shipping, city_shipping, postal_code_shipping, country_shipping, region_shipping) 
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
   `;
@@ -108,4 +108,42 @@ function customerStore(req, res) {
     });
   });
 }
-module.exports = { orderIndex, orderShow, orderStore, customerStore }
+
+
+async function sendEmailToSeller(req, res) {
+  const { order, customer, games } = req.body;
+
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    }
+  });
+
+  let htmlContent = `
+    <h2>Nuovo ordine ricevuto!</h2>
+    <p><strong>Cliente:</strong> ${customer.name} ${customer.surname}</p>
+    <p><strong>Email:</strong> ${customer.email}</p>
+    <p><strong>Telefono:</strong> ${customer.phone}</p>
+    <p><strong>Totale ordine:</strong> ${order.total_price} €</p>
+    <h3>Prodotti:</h3>
+    <ul>
+      ${games.map(game => `<li>${game.title} x${game.quantity} - ${game.price}€</li>`).join("")}
+    </ul>
+  `;
+
+  try {
+    await transporter.sendMail({
+      from: `"Top Games" <${process.env.EMAIL_USER}>`,
+      to: process.env.EMAIL_USER,
+      subject: "Nuovo ordine ricevuto!",
+      html: htmlContent
+    });
+    res.status(200).json({ message: 'Email inviata al venditore con successo' });
+  } catch (err) {
+    console.error('Errore invio email al venditore:', err);
+    res.status(500).json({ error: 'Errore nell\'invio email al venditore' });
+  }
+}
+module.exports = { orderIndex, orderShow, orderStore, customerStore, sendEmailToSeller }
